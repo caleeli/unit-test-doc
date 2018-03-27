@@ -11,6 +11,6 @@
         "phpunit-doc"
     ],
     "require": {
-        "phpdocumentor/reflection-docblock": "^3.3"
+        "phpdocumentor/reflection-docblock": "3.*"
     }
 }
