@@ -1,0 +1,16 @@
+{
+    "name": "caleeli/unit-test-doc",
+    "autoload": {
+        "psr-4": {
+        },
+        "files": [
+            "src/global.php"
+        ]
+    },
+    "bin": [
+        "phpunit-doc"
+    ],
+    "require": {
+        "phpdocumentor/reflection-docblock": "^3.3"
+    }
+}
