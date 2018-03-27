@@ -1,12 +1,12 @@
 # unit-test-doc
 Extract documentation from unit tests.
 
-#install
+# install
 composer global require caleeli/unit-test-doc
 or
 composer require caleeli/unit-test-doc
 
-#usage
+# usage
 Generate the document for the current path.
 unit-test-doc > report.html
 or
