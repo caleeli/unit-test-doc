@@ -49,7 +49,7 @@ $function = function (ReflectionClass $class) {
                 foreach ($comments as $comment) {
                     if (strpos($comment[0], 'Assertion:') === 0) {
                         $type = 1;
-                        $card['results'][$index][] = trim(substr($comment[0], 7));
+                        $card['results'][$index][] = trim(substr($comment[0], 10));
                     } else {
                         if ($type) {
                             $index++;
