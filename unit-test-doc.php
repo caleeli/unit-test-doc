@@ -47,7 +47,7 @@ $function = function (ReflectionClass $class) {
                 $index = 0;
                 $type = 0;
                 foreach ($comments as $comment) {
-                    if (strpos($comment[0], 'Assert:') === 0) {
+                    if (strpos($comment[0], 'Assertion:') === 0) {
                         $type = 1;
                         $card['results'][$index][] = trim(substr($comment[0], 7));
                     } else {
