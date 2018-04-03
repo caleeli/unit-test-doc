@@ -53,6 +53,7 @@ $function = function (ReflectionClass $class) {
                     } else {
                         if ($type) {
                             $index++;
+                            $card['results'][$index] = [];
                         }
                         $type = 0;
                         $card['steps'][$index][] = $comment;
