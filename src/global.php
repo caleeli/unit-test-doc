@@ -68,12 +68,12 @@ function findClasses($path, $namespace, &$res = [])
 {
     foreach (glob("$path/*.php") as $filename) {
         $name = basename($filename, '.php');
-        $className = "$namespace\\$name";
+        $className = "$namespace$name";
         $res[] = new ReflectionClass($className);
     }
     foreach (glob("$path/*", GLOB_ONLYDIR) as $dir) {
         $name = basename($dir);
-        findClasses("$path/$name", "$namespace\\$name", $res);
+        findClasses("$path/$name", "$namespace$name\\", $res);
     }
     return $res;
 }

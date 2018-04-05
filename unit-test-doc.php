@@ -13,6 +13,10 @@ $loader = addComposerLoader($project . '/vendor/autoload.php');
 $map = $loader->getClassMap();
 
 $function = function (ReflectionClass $class) {
+    if (!$class->isSubclassOf(PHPUnit\Framework\TestCase::class)) {
+        return;
+    }
+
     if ($class->newInstanceWithoutConstructor() instanceof PHPUnit\Framework\TestCase) {
         $card = [
             'title'              => '',
@@ -31,7 +35,7 @@ $function = function (ReflectionClass $class) {
         foreach ($class->getMethods() as $method) {
             if (strtolower(substr($method->getName(), 0)) === 'setup') {
                 $comments = getInlineCommentsInCode(getCodeFromReflectionMethod($method), '');
-                $preCondition = docBlockParse($method->getDocComment())->getSummary();
+                $preCondition = $method->getDocComment() ? docBlockParse($method->getDocComment())->getSummary() : 'Missing doc block for ' . $method->getDeclaringClass()->getName() . '::' . $method->getName();
                 $card['pre-conditions'][$preCondition] = $comments;
             }
         }
@@ -64,4 +68,19 @@ $function = function (ReflectionClass $class) {
         }
     }
 };
-array_filter(findClasses("$project/tests/Feature", 'Tests\Feature'), $function);
+$basePath = realpath('./tests');
+foreach ($map as $class => $file) {
+    if (strpos(realpath($file), $basePath)!==0) {
+        continue;
+    }
+    $reflection = new ReflectionClass($class);
+    $function($reflection);
+}
+foreach($loader->getPrefixesPsr4() as $namespace=>$paths) {
+    foreach($paths as $path) {
+        if (strpos(realpath($path), $basePath)!==0) {
+            continue;
+        }
+        array_filter(findClasses($path, $namespace), $function);
+    }
+}
