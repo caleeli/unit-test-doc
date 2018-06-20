@@ -1,3 +1,15 @@
+<html>
+<head>
+    <style>
+        td {
+            vertical-align: top;
+        }
+        body {
+            width: 8in;
+        }
+    </style>
+</head>
+<body>
 <?php
 if (file_exists(__DIR__ . '/vendor/autoload.php')) {
 	require __DIR__ . '/vendor/autoload.php';
@@ -11,8 +23,9 @@ $project = empty($argv[1]) ? '.' : $argv[1];
 $loader = addComposerLoader($project . '/vendor/autoload.php');
 
 $map = $loader->getClassMap();
+$indexList = [];
 
-$function = function (ReflectionClass $class) {
+$function = function (ReflectionClass $class) use (&$indexList) {
     if (!$class->isSubclassOf(PHPUnit\Framework\TestCase::class)) {
         return;
     }
@@ -50,8 +63,15 @@ $function = function (ReflectionClass $class) {
                 $card['results'] = [[]];
                 $index = 0;
                 $type = 0;
+                $lastType = 0;
                 foreach ($comments as $comment) {
-                    if (strpos($comment[0], 'Assertion:') === 0) {
+                    preg_match('/ +/', $comment[2][1], $sp);
+                    $indent = strlen($sp[0]);
+                    $typeA = strpos($comment[0], 'Assertion:') === 0 ? 1 : 0;
+                    if ($indent > 8) {
+                        $typeA = $lastType;
+                    }
+                    if ($typeA) { //strpos($comment[0], 'Assertion:') === 0) {
                         $type = 1;
                         $card['results'][$index][] = trim(substr($comment[0], 10));
                     } else {
@@ -62,7 +82,10 @@ $function = function (ReflectionClass $class) {
                         $type = 0;
                         $card['steps'][$index][] = $comment;
                     }
+                    $lastType = $type;
                 }
+                $indexTitle = preg_replace('/\W+/', '_', $card['title']);
+                $indexList[$indexTitle] = $card['title'];
                 include __DIR__ . '/template.php';
             }
         }
@@ -84,3 +107,16 @@ foreach($loader->getPrefixesPsr4() as $namespace=>$paths) {
         array_filter(findClasses($path, $namespace), $function);
     }
 }
+
+?>
+<?php
+foreach($indexList as $id => $title):
+?>
+    <a href="#<?php echo htmlentities($id, ENT_QUOTES); ?>">
+        <?php echo htmlentities($title, ENT_NOQUOTES); ?>
+    </a><br>
+<?php
+endforeach;
+?>
+</body>
+</html>

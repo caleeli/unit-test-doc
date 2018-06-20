@@ -45,9 +45,9 @@ function getInlineCommentsInCode($code, $prefix)
     $res = [];
     $code = [];
     $index = -1;
-    foreach ($tokens as $token) {
+    foreach ($tokens as $i => $token) {
         if (is_array($token) && $token[0] === T_COMMENT) {
-            $res[] = [$prefix . trim(substr($token[1], 2)), ''];
+            $res[] = [$prefix . trim(substr($token[1], 2)), '', $tokens[$i-1]];
             $index++;
         } elseif ($index >= 0) {
             $res[$index][1] .= is_array($token) ? $token[1] : $token;

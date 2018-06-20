@@ -1,15 +1,4 @@
-<html>
-    <head>
-        <style>
-            td {
-                vertical-align: top;
-            }
-            body {
-                width: 8in;
-            }
-        </style>
-    </head>
-    <body>
+    <div id="<?php echo htmlentities($indexTitle, ENT_QUOTES); ?>">
         <h1><?php echo $card['title']; ?></h1>
         <p><?php echo $card['description']; ?></p>
         <table border="1" cellpadding="0" cellspacing="0" width="100%">
@@ -54,5 +43,4 @@
             </tr>
             <?php endforeach; ?>
         </table>
-    </body>
-</html>
+    </div>
