@@ -14,10 +14,10 @@
             <tr>
                 <td><b>Pre-conditions</b></td>
                 <td>
-                    <?php foreach($card['pre-conditions'] as $preCondition => $steps): ?>
+                    <?php foreach ($card['pre-conditions'] as $preCondition => $steps): ?>
                     <?php echo $preCondition; ?>
                     <ol>
-                        <?php foreach($steps as $step): ?>
+                        <?php foreach ($steps as $step): ?>
                         <li><?php echo $step[0]; ?></li>
                         <?php endforeach; ?>
                     </ol>
@@ -30,11 +30,11 @@
                 <td width="50%"><b>Steps</b></td>
                 <td width="50%"><b>Expected results</b></td>
             </tr>
-            <?php foreach($card['steps'] as $i => $steps):?>
+            <?php foreach ($card['steps'] as $i => $steps):?>
             <tr>
                 <td>
                     <ul>
-                        <?php foreach($steps as $step): ?>
+                        <?php foreach ($steps as $step): ?>
                         <li><?php echo $step[0]; ?></li>
                         <?php endforeach; ?>
                     </ul>
