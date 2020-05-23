@@ -72,6 +72,10 @@ $function = function (ReflectionClass $class) use (&$indexList, &$doneClasses) {
                 $type = 0;
                 $lastType = 0;
                 foreach ($comments as $comment) {
+                    // it must be T_WHITESPACE
+                    if (!is_array($comment[2])) {
+                        continue;
+                    }
                     preg_match('/ +/', $comment[2][1], $sp);
                     $indent = strlen($sp[0]);
                     $typeA = strpos($comment[0], 'Assertion:') === 0 ? 1 : 0;
