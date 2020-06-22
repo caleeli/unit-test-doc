@@ -60,6 +60,9 @@ $function = function (ReflectionClass $class) use (&$indexList, &$doneClasses) {
         foreach ($class->getMethods() as $method) {
             if (strtolower(substr($method->getName(), 0, 4)) === 'test') {
                 $testDoc = $method->getDocComment();
+                if (!$testDoc) {
+                    throw new Exception($class->getName() . '::' . $method->getName() . '() does not have a docblock defined');
+                }
                 $testDoc = $testDoc ? docBlockParse($testDoc) : null;
                 $diagram = $testDoc->getTagsByName('diagram');
                 $card['title'] = $testDoc ? $testDoc->getSummary() : $method->getName();
